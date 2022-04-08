@@ -22,12 +22,14 @@ public class GridManager : MonoBehaviour
         _tiles = new Dictionary<Vector2, Tile>();
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
-                Tile spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);                     // Instanciates the tile
+                Tile spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);                   // Instanciates the tile
+                Vector2 coordinates = new Vector2(x, y);
                 spawnedTile.name = $"Tile {x} {y}";
-
+                spawnedTile.coordinates = coordinates;
+		 spawnedTile.stateChange.AddListener(PropagateStateChange);
                 spawnedTile.Init();
 
-                _tiles[new Vector2(x, y)] = spawnedTile;                                                                // Adds the tile to the dictionnary
+                _tiles[coordinates] = spawnedTile;                                                                // Adds the tile to the dictionnary
             }
         }
     }
@@ -36,5 +38,13 @@ public class GridManager : MonoBehaviour
     {
         if (_tiles.TryGetValue(pos, out var tile)) return tile;
         return null;
+    }
+    
+    public void PropagateStateChange(Vector2 coordinates) {
+    	Tile target = _tiles[coordinates];
+    	GetTileAtPosition(new Vector2(coordinates.x, coordinates.y-1))?.ChangeTileType(target.retrieveTileType());
+    	GetTileAtPosition(new Vector2(coordinates.x, coordinates.y+1))?.ChangeTileType(target.retrieveTileType());
+    	GetTileAtPosition(new Vector2(coordinates.x-1, coordinates.y))?.ChangeTileType(target.retrieveTileType());
+    	GetTileAtPosition(new Vector2(coordinates.x+1, coordinates.y))?.ChangeTileType(target.retrieveTileType());
     }
 }

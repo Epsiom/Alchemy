@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Enum of all different tile types, each matching a state class
@@ -15,12 +16,14 @@ public enum TileType
     WATER
 }
 
+[System.Serializable] public class _UnityEventVector2:UnityEvent<Vector2> {}
 
 public class Tile : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
-
+    public Vector2 coordinates;
+    public _UnityEventVector2 stateChange;
     private TileState _tileState;       // Status pattern
 
     public void Init()
@@ -37,7 +40,13 @@ public class Tile : MonoBehaviour
     {
         _highlight.SetActive(false);
     }
-
+	
+	
+    void OnMouseUp()
+    {
+    	ChangeTileType(TileType.AETHER);
+    	stateChange.Invoke(coordinates);
+    }
     /// <summary>
     /// Randomly picks an element for the tile (except UNSET and AETHER)
     /// </summary>
