@@ -25,24 +25,11 @@ public class GridManager : MonoBehaviour
                 Tile spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);                     // Instanciates the tile
                 spawnedTile.name = $"Tile {x} {y}";
 
-                bool isOffset = (x + y) % 2 == 1;                                                                        // Used to alternate the coloration on the tile to make a checkerboard pattern
-                spawnedTile.Init(isOffset);
-
-                this.RandomlyAssignTileStateToTile(spawnedTile);
+                spawnedTile.Init();
 
                 _tiles[new Vector2(x, y)] = spawnedTile;                                                                // Adds the tile to the dictionnary
             }
         }
-    }
-
-    /// <summary>
-    /// Randomly picks an element for the tile (except UNSET and AETHER)
-    /// </summary>
-    /// <param name="tile"></param>
-    private void RandomlyAssignTileStateToTile(Tile tile)
-    {
-        TileType randomTileType = (TileType)Random.Range(2, 5);
-        tile.changeTileType(randomTileType);
     }
 
     public Tile GetTileAtPosition(Vector2 pos)
