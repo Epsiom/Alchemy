@@ -20,7 +20,7 @@ public enum TileType
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer _renderer;
+    [SerializeField] private Material _material;
     [SerializeField] private GameObject _highlight;
     public Vector2 coordinates;
     public _UnityEventVector2 stateChange;
@@ -29,6 +29,7 @@ public class Tile : MonoBehaviour
     public void Init()
     {
         this.RandomlyAssignTileStateToTile();
+        this._material = gameObject.GetComponent<Renderer>().material;
     }
 
     void OnMouseEnter()
@@ -67,23 +68,23 @@ public class Tile : MonoBehaviour
         {
             case TileType.AETHER:
                 _tileState = new TileStateAether();
-                _renderer.color = new Color(0.2f, 0.074f, 0.52f);
+                _material.color = new Color(0.2f, 0.074f, 0.52f);
                 break;
             case TileType.AIR:
                 _tileState = new TileStateAir();
-                _renderer.color = new Color(0.68f, 0.76f, 0.82f);
+                _material.color = new Color(0.68f, 0.76f, 0.82f);
                 break;
             case TileType.EARTH:
                 _tileState = new TileStateEarth();
-                _renderer.color = new Color(0.64f, 0.37f, 0.19f);
+                _material.color = new Color(0.64f, 0.37f, 0.19f);
                 break;
             case TileType.FIRE:
                 _tileState = new TileStateFire();
-                _renderer.color = new Color(0.86f, 0.48f, 0.41f);
+                _material.color = new Color(0.86f, 0.48f, 0.41f);
                 break;
             case TileType.WATER:
                 _tileState = new TileStateWater();
-                _renderer.color = new Color(0.34f, 0.5f, 0.81f);
+                _material.color = new Color(0.34f, 0.5f, 0.81f);
                 break;
             case TileType.UNSET:
             default:

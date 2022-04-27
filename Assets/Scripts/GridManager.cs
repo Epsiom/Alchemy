@@ -15,18 +15,18 @@ public class GridManager : MonoBehaviour
     void Start()
     {
         GenerateGrid();
-        _cam.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);  // Centers the camera on the grid
+        //_cam.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);  // Centers the camera on the grid
     }
 
     void GenerateGrid() {
         _tiles = new Dictionary<Vector2, Tile>();
         for (int x = 0; x < _width; x++) {
-            for (int y = 0; y < _height; y++) {
-                Tile spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y), Quaternion.identity);                   // Instanciates the tile
-                Vector2 coordinates = new Vector2(x, y);
-                spawnedTile.name = $"Tile {x} {y}";
+            for (int z = 0; z < _height; z++) {
+                Tile spawnedTile = Instantiate(_tilePrefab, new Vector3(x, -0.5f, z), Quaternion.identity);                   // Instanciates the tile
+                Vector2 coordinates = new Vector2(x, z);
+                spawnedTile.name = $"Tile {x} {z}";
                 spawnedTile.coordinates = coordinates;
-		 spawnedTile.stateChange.AddListener(PropagateStateChange);
+		        spawnedTile.stateChange.AddListener(PropagateStateChange);
                 spawnedTile.Init();
 
                 _tiles[coordinates] = spawnedTile;                                                                // Adds the tile to the dictionnary
