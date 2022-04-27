@@ -20,16 +20,17 @@ public enum TileType
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField] private Material _material;
     [SerializeField] private GameObject _highlight;
+
+    private Material _material;
     public Vector2 coordinates;
     public _UnityEventVector2 stateChange;
     private TileState _tileState;       // Status pattern
 
     public void Init()
     {
-        this.RandomlyAssignTileStateToTile();
         this._material = gameObject.GetComponent<Renderer>().material;
+        this.RandomlyAssignTileStateToTile();
     }
 
     void OnMouseEnter()
