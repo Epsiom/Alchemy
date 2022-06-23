@@ -30,6 +30,7 @@ public class Tile : MonoBehaviour
     public void Init()
     {
         this._material = gameObject.GetComponent<Renderer>().material;
+        _material.EnableKeyword("_EMISSION");
         this.RandomlyAssignTileStateToTile();
     }
 
@@ -41,6 +42,7 @@ public class Tile : MonoBehaviour
     void OnMouseExit()
     {
         _highlight.SetActive(false);
+        _material.DisableKeyword("_EMISSION");
     }
 	
 	
@@ -48,6 +50,7 @@ public class Tile : MonoBehaviour
     {
     	ChangeTileType(TileType.AETHER);
     	stateChange.Invoke(coordinates);
+
     }
     /// <summary>
     /// Randomly picks an element for the tile (except UNSET and AETHER)
@@ -65,32 +68,37 @@ public class Tile : MonoBehaviour
     /// <param name="newTileType">The new type of the tile</param>
     public void ChangeTileType(TileType newTileType)
     {
+    	var color = _material.color;
+    	
         switch (newTileType)
         {
             case TileType.AETHER:
                 _tileState = new TileStateAether();
-                _material.color = new Color(0.2f, 0.074f, 0.52f);
+                color = new Color(0.2f, 0.074f, 0.52f);
                 break;
             case TileType.AIR:
                 _tileState = new TileStateAir();
-                _material.color = new Color(0.68f, 0.76f, 0.82f);
+                color = new Color(0.68f, 0.76f, 0.82f);
                 break;
             case TileType.EARTH:
                 _tileState = new TileStateEarth();
-                _material.color = new Color(0.64f, 0.37f, 0.19f);
+                color = new Color(0.64f, 0.37f, 0.19f);
                 break;
             case TileType.FIRE:
                 _tileState = new TileStateFire();
-                _material.color = new Color(0.86f, 0.48f, 0.41f);
+                color = new Color(0.86f, 0.48f, 0.41f);
                 break;
             case TileType.WATER:
                 _tileState = new TileStateWater();
-                _material.color = new Color(0.34f, 0.5f, 0.81f);
+                color = new Color(0.34f, 0.5f, 0.81f);
                 break;
             case TileType.UNSET:
             default:
                 throw new System.ArgumentOutOfRangeException(nameof(newTileType), newTileType, null);
         }
+        
+        _material.color = color;
+        _material.SetColor("_EmissionColor", new Color(0.2f, 0.074f, 0.52f, 0.00001f));
     }
 
     public TileType retrieveTileType()
